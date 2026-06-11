@@ -14,6 +14,9 @@
     padding-bottom: 88px;
   }
   .page-hero .inner { display: flex; flex-direction: column; gap: 26px; max-width: 820px; }
+  @media (max-width: 600px) {
+    .page-hero { padding-top: calc(var(--nav-h) + 56px); padding-bottom: 56px; }
+  }
 </style>
 </head>
 <body>
@@ -24,7 +27,7 @@
       <svg width="26" height="18" viewBox="0 0 60 40" fill="none" aria-hidden="true"><rect x="0" y="3" width="7" height="34" rx="3.5" fill="#C8FF3D"></rect><rect x="10.6" y="7" width="7" height="26" rx="3.5" fill="#C8FF3D"></rect><rect x="21.2" y="11" width="7" height="18" rx="3.5" fill="#C8FF3D"></rect><rect x="31.8" y="10" width="7" height="20" rx="3.5" fill="#C8FF3D"></rect><rect x="42.4" y="6" width="7" height="28" rx="3.5" fill="#C8FF3D"></rect><rect x="53" y="0" width="7" height="40" rx="3.5" fill="#C8FF3D"></rect></svg>
       <span class="wordmark">verant<span class="wm-dot">.</span></span>
     </a>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-menu">
       <a class="nav-link" href="index.html">Home</a>
       <a class="nav-link" href="product.html" aria-current="page">Product</a>
       <a class="nav-link" href="pricing.html">Pricing</a>
@@ -32,6 +35,10 @@
     </div>
     <div class="nav-cta-wrap">
       <a class="btn btn-primary btn-sm" href="pricing.html">Start a pilot</a>
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
     </div>
   </div>
 </nav>

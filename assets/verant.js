@@ -28,6 +28,31 @@
     setTimeout(function () { window.location.href = href; }, 200);
   });
 
+  /* ---------- mobile nav menu ---------- */
+  document.addEventListener("DOMContentLoaded", function () {
+    var nav = document.querySelector(".nav");
+    var toggle = document.querySelector(".nav-toggle");
+    if (!nav || !toggle) return;
+
+    function setOpen(open) {
+      nav.classList.toggle("menu-open", open);
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+
+    toggle.addEventListener("click", function () {
+      setOpen(!nav.classList.contains("menu-open"));
+    });
+    nav.querySelectorAll(".nav-links a").forEach(function (a) {
+      a.addEventListener("click", function () { setOpen(false); });
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setOpen(false);
+    });
+    window.matchMedia("(min-width: 821px)").addEventListener("change", function (mq) {
+      if (mq.matches) setOpen(false);
+    });
+  });
+
   /* ---------- scroll reveals ---------- */
   document.addEventListener("DOMContentLoaded", function () {
     var els = document.querySelectorAll("[data-reveal]");
