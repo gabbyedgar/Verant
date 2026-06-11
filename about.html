@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Verant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/verant.css">
+<style>
+  .page-hero {
+    padding-top: calc(var(--nav-h) + 112px);
+    padding-bottom: 96px;
+  }
+  .page-hero .inner { display: flex; flex-direction: column; gap: 30px; max-width: 880px; }
+  .page-hero h1 { font-size: clamp(44px, 5.6vw, 76px); }
+  .why { border-top: 1px solid var(--line); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .why-copy { display: flex; flex-direction: column; gap: 22px; }
+  .why-copy p { font-size: 16.5px; line-height: 1.7; color: var(--text-2); text-wrap: pretty; }
+  .why-copy p strong { color: var(--text); font-weight: 540; }
+  .name-card {
+    background: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 40px 40px 44px;
+  }
+  .name-card .entry {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 420;
+    letter-spacing: -0.01em;
+  }
+  .name-card .entry .wm-dot { color: var(--lime); }
+  .name-card .pron {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-3);
+    margin-top: 6px;
+  }
+  .name-card dl { margin-top: 28px; display: flex; flex-direction: column; gap: 18px; }
+  .name-card dt {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+  .name-card dd { font-size: 15px; line-height: 1.6; color: var(--text-2); margin-top: 5px; }
+  .name-card dd em { font-family: var(--serif); font-style: italic; color: var(--text); }
+  @media (max-width: 1024px) { .why-grid { grid-template-columns: 1fr; gap: 48px; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="Verant home">
+      <svg width="26" height="18" viewBox="0 0 60 40" fill="none" aria-hidden="true"><rect x="0" y="3" width="7" height="34" rx="3.5" fill="#C8FF3D"></rect><rect x="10.6" y="7" width="7" height="26" rx="3.5" fill="#C8FF3D"></rect><rect x="21.2" y="11" width="7" height="18" rx="3.5" fill="#C8FF3D"></rect><rect x="31.8" y="10" width="7" height="20" rx="3.5" fill="#C8FF3D"></rect><rect x="42.4" y="6" width="7" height="28" rx="3.5" fill="#C8FF3D"></rect><rect x="53" y="0" width="7" height="40" rx="3.5" fill="#C8FF3D"></rect></svg>
+      <span class="wordmark">verant<span class="wm-dot">.</span></span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Home</a>
+      <a class="nav-link" href="product.html">Product</a>
+      <a class="nav-link" href="pricing.html">Pricing</a>
+      <a class="nav-link" href="about.html" aria-current="page">About</a>
+    </div>
+    <div class="nav-cta-wrap">
+      <a class="btn btn-primary btn-sm" href="pricing.html">Start a pilot</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO / POSITION -->
+<section class="page-hero" data-screen-label="About — Hero">
+  <div class="container">
+    <div class="inner">
+      <span class="kicker"><span class="dot pulse"></span>The position</span>
+      <h1 data-reveal>Truth, on a schedule.</h1>
+      <p class="lede" data-reveal style="--d:0.08s; max-width: 62ch;">Verant exists because the most consequential market intelligence is public, free, and almost entirely unread — until it&rsquo;s too late to act on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section class="why" style="padding-top: 88px;" data-screen-label="About — Why now">
+  <div class="container why-grid">
+    <div class="section-head" style="margin-bottom: 0;" data-reveal>
+      <span class="kicker muted">Why now</span>
+      <h2>The field moves weekly. Your intelligence is quarterly.</h2>
+    </div>
+    <div class="why-copy" data-reveal style="--d:0.1s">
+      <p>In AI security and governance, the ground shifts faster than anywhere in B2B. Frameworks harden mid-quarter — the EU AI Act, NIST AI RMF, ISO 42001. A competitor&rsquo;s certification page changes on a Tuesday and reshapes every security review you walk into that month.</p>
+      <p>Enterprises hired analysts to watch for this. Mid-market companies got Google Alerts — volume without judgment, noise without implication. The signal was always public: <strong>pricing diffs, patent filings, job postings, trust pages.</strong> What was missing was someone whose entire job is reading it, every week, for you.</p>
+      <p>That&rsquo;s the whole company. Not advice, not workshops, not an 80-slide readout twice a year. A frequency you&rsquo;re tuned to, and one page every Monday that tells the truth about your field — including the weeks when the truth is &ldquo;nothing happened.&rdquo;</p>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO QUOTE -->
+<section class="manifesto" data-screen-label="About — Manifesto">
+  <div class="container" data-reveal>
+    <blockquote>&ldquo;Intelligence is a deadline business. <span class="hl">Being right late is the same as being wrong.</span>&rdquo;</blockquote>
+    <cite>The Verant position</cite>
+  </div>
+</section>
+
+<!-- TENETS -->
+<section data-screen-label="About — Tenets">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="kicker muted">Three words on the door</span>
+      <h2>Truth · Intelligence · Strategy</h2>
+    </div>
+    <div class="tenets">
+      <div class="tenet" data-reveal>
+        <span class="t-n">I</span>
+        <h3>Truth</h3>
+        <p>Every claim cites a public source. Uncertainty is labeled as uncertainty. A quiet week is reported as a quiet week. The brief is only useful if you never have to wonder whether it&rsquo;s flattering you.</p>
+      </div>
+      <div class="tenet" data-reveal style="--d:0.1s">
+        <span class="t-n">II</span>
+        <h3>Intelligence</h3>
+        <p>Information you can act on before your competitors act on you. The standard isn&rsquo;t &ldquo;interesting&rdquo; — it&rsquo;s &ldquo;earlier than the press release, with the implication attached.&rdquo;</p>
+      </div>
+      <div class="tenet" data-reveal style="--d:0.2s">
+        <span class="t-n">III</span>
+        <h3>Strategy</h3>
+        <p>Signals are the means; your next ninety days are the point. Every brief ends with what the week implies for your position — pricing, roadmap, narrative — not a pile of observations.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE NAME -->
+<section style="padding-top: 0;" data-screen-label="About — The name">
+  <div class="container why-grid">
+    <div class="section-head" style="margin-bottom: 0;" data-reveal>
+      <span class="kicker muted">The name</span>
+      <h2>From <em style="font-style: italic;">verus</em>. True.</h2>
+    </div>
+    <div data-reveal style="--d:0.1s">
+      <div class="name-card">
+        <div class="entry">verant<span class="wm-dot">.</span></div>
+        <div class="pron">/ˈvɛr·ənt/ · noun</div>
+        <dl>
+          <div>
+            <dt>Root</dt>
+            <dd>Latin <em>verus</em> — true, real, actual. The same root as <em>verify</em> and <em>veritas</em>.</dd>
+          </div>
+          <div>
+            <dt>Working definition</dt>
+            <dd>One who tells you what is actually happening, on time.</dd>
+          </div>
+          <div>
+            <dt>The dot</dt>
+            <dd>The live indicator. It means the frequency is open and someone is listening on your behalf.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles" style="padding-top: 0;" data-screen-label="About — Principles">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="kicker muted">Operating principles</span>
+      <h2>How the briefs stay honest.</h2>
+    </div>
+    <div class="principles" data-reveal style="--d:0.06s">
+      <div class="principle">
+        <span class="p-n">01</span>
+        <h3>Public sources only</h3>
+        <p>If it can&rsquo;t be cited openly, it doesn&rsquo;t exist to us. No pretexting, no private channels, no &ldquo;a source tells us.&rdquo; The edge is attention, not access.</p>
+      </div>
+      <div class="principle">
+        <span class="p-n">02</span>
+        <h3>A quiet week is a finding</h3>
+        <p>We never pad. Silence from a competitor — slowed hiring, a stalled changelog — is reported as exactly that, with what it implies.</p>
+      </div>
+      <div class="principle">
+        <span class="p-n">03</span>
+        <h3>Implications, not observations</h3>
+        <p>&ldquo;They posted four jobs&rdquo; is an observation. &ldquo;They&rsquo;re building a federal motion that lands in 2027, which frees your mid-market flank&rdquo; is the product.</p>
+      </div>
+      <div class="principle">
+        <span class="p-n">04</span>
+        <h3>One page, always</h3>
+        <p>The constraint is the discipline. If it doesn&rsquo;t fit on a page, we haven&rsquo;t finished deciding what matters.</p>
+      </div>
+      <div class="principle">
+        <span class="p-n">05</span>
+        <h3>We say when we&rsquo;re unsure</h3>
+        <p>Confidence levels are stated, not implied. A hypothesis is labeled a hypothesis. Trust compounds faster than certainty theater.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" data-screen-label="About — CTA">
+  <div class="container" data-reveal>
+    <h2>Tune in.</h2>
+    <p class="lede">A 30-minute setup call this week. Your first brief next Monday, 7am.</p>
+    <div class="cta-actions">
+      <a class="btn btn-primary" href="pricing.html">Start a pilot — $500</a>
+      <a class="btn btn-ghost" href="product.html#brief">Read a sample brief <span class="arr">→</span></a>
+    </div>
+    <p class="fine">Truth · Intelligence · Strategy</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer data-screen-label="Footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="index.html" class="nav-logo" aria-label="Verant home">
+          <svg width="26" height="18" viewBox="0 0 60 40" fill="none" aria-hidden="true"><rect x="0" y="3" width="7" height="34" rx="3.5" fill="#C8FF3D"></rect><rect x="10.6" y="7" width="7" height="26" rx="3.5" fill="#C8FF3D"></rect><rect x="21.2" y="11" width="7" height="18" rx="3.5" fill="#C8FF3D"></rect><rect x="31.8" y="10" width="7" height="20" rx="3.5" fill="#C8FF3D"></rect><rect x="42.4" y="6" width="7" height="28" rx="3.5" fill="#C8FF3D"></rect><rect x="53" y="0" width="7" height="40" rx="3.5" fill="#C8FF3D"></rect></svg>
+          <span class="wordmark">verant<span class="wm-dot">.</span></span>
+        </a>
+        <p class="tagline">competitive intelligence, on frequency</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="product.html">How it works</a></li>
+          <li><a href="product.html#brief">Sample brief</a></li>
+          <li><a href="product.html#compare">Why not consultants</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="about.html#principles">Principles</a></li>
+          <li><a href="pricing.html#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Start</h4>
+        <ul>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="pricing.html">Start a pilot</a></li>
+          <li><a href="mailto:brief@verant.co">brief@verant.co</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Verant</span>
+      <span class="motto">Truth <span class="sep">·</span> Intelligence <span class="sep">·</span> Strategy</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/verant.js"></script>
+</body>
+</html>
