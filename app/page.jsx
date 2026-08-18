@@ -1,25 +1,12 @@
 import Link from "next/link";
 import SignalFeed from "@/components/SignalFeed";
-
-const STRIP_ITEMS = [
-  "Pricing pages",
-  "Hiring & careers",
-  "Patents & IP",
-  "Governance frameworks",
-  "Product changelogs",
-  "Funding & filings",
-  "People moves",
-  "Web & positioning",
-];
-
-const MINI_PLANS = [
-  { name: "Pilot", price: "$500", per: "one-time · 4 weeks", desc: "Four Monday briefs. See the signal before you commit." },
-  { name: "Starter", price: "$800", per: "/ month", desc: "The Monday brief on three competitors, every week." },
-  { name: "Growth", price: "$1,500", per: "/ month", desc: "Five competitors, mid-week alerts on critical moves." },
-  { name: "Pro", price: "$3,000", per: "/ month", desc: "Eight competitors, same-day flashes, analyst on reply." },
-];
+import { PLANS } from "@/lib/plans";
+import { STRIP_ITEMS, getSignalWindow } from "@/lib/signals";
+import { getLatestBrief } from "@/lib/briefs";
 
 export default function HomePage() {
+  const seed = getSignalWindow(2, 6);
+  const latest = getLatestBrief();
   return (
     <main>
       {/* HERO */}
@@ -36,7 +23,7 @@ export default function HomePage() {
               only.
             </p>
             <div className="hero-actions" data-reveal style={{ "--d": "0.16s" }}>
-              <Link className="btn btn-primary" href="/pricing">Start a pilot — $500</Link>
+              <Link className="btn btn-primary" href="/start?plan=pilot" prefetch={false}>Start a pilot — $500</Link>
               <Link className="btn btn-ghost" href="/product">
                 See a sample brief <span className="arr">→</span>
               </Link>
@@ -45,7 +32,7 @@ export default function HomePage() {
               Four weeks. No commitment. Cancel by reply.
             </p>
           </div>
-          <SignalFeed />
+          <SignalFeed seed={seed} startOffset={8} />
         </div>
       </section>
 
@@ -131,53 +118,33 @@ export default function HomePage() {
               No dashboards to check. No feeds to triage. The Monday brief reads in four minutes
               and every claim links to its public source.
             </p>
-            <Link className="tlink" href="/product#brief">
-              Explore the full sample brief <span className="arr">→</span>
+            <Link className="tlink" href={`/briefs/${latest.slug}`}>
+              Read this week’s brief in full <span className="arr">→</span>
             </Link>
           </div>
           <div data-reveal style={{ "--d": "0.12s" }}>
             <div className="brief" aria-label="Sample brief preview">
               <div className="brief-bar">
                 <span className="l"><span className="dot" />Verant weekly brief</span>
-                <span className="r">Wk 24 · 2026</span>
+                <span className="r">Wk {latest.week} · {latest.year}</span>
               </div>
               <div className="brief-inner">
-                <h3 className="brief-title">Cipherline is going upmarket. Quietly.</h3>
-                <p className="brief-meta">3 competitors · 11 signals · 4 min read</p>
+                <h3 className="brief-title">{latest.title}</h3>
+                <p className="brief-meta">{latest.meta}</p>
                 <div style={{ marginTop: 24, display: "flex", flexDirection: "column" }}>
-                  <div className="sig">
-                    <div className="sig-head" style={{ cursor: "default" }}>
-                      <span className="tag">Pricing</span>
-                      <span className="what">
-                        Enterprise pricing pulled from public site; sales-led motion begins
-                      </span>
-                      <span className="chev" aria-hidden="true">&nbsp;</span>
+                  {latest.competitors[0].signals.slice(0, 3).map((sig, i, arr) => (
+                    <div className="sig" key={sig.tag} style={i === arr.length - 1 ? { borderBottom: 0 } : undefined}>
+                      <div className="sig-head" style={{ cursor: "default" }}>
+                        <span className="tag">{sig.tag}</span>
+                        <span className="what">{sig.what}</span>
+                        <span className="chev" aria-hidden="true">&nbsp;</span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="sig">
-                    <div className="sig-head" style={{ cursor: "default" }}>
-                      <span className="tag">Hiring</span>
-                      <span className="what">
-                        Federal sales + FedRAMP lead roles posted within 48 hours
-                      </span>
-                      <span className="chev" aria-hidden="true">&nbsp;</span>
-                    </div>
-                  </div>
-                  <div className="sig" style={{ borderBottom: 0 }}>
-                    <div className="sig-head" style={{ cursor: "default" }}>
-                      <span className="tag">Patents</span>
-                      <span className="what">USPTO filing signals inference-layer audit capability</span>
-                      <span className="chev" aria-hidden="true">&nbsp;</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
                 <div className="brief-bottomline">
                   <div className="lbl">Bottom line</div>
-                  <p>
-                    Three independent signals point the same direction: Cipherline is repositioning
-                    for regulated, public-sector buyers. Your mid-market motion just got quieter
-                    competition — and a window.
-                  </p>
+                  <p>{latest.excerpt}</p>
                 </div>
               </div>
             </div>
@@ -211,12 +178,12 @@ export default function HomePage() {
             <h2>Priced like software. Because it works like software.</h2>
           </div>
           <div className="mini-plans" data-reveal style={{ "--d": "0.08s" }}>
-            {MINI_PLANS.map((p) => (
-              <Link className="mini-plan" href="/pricing" key={p.name}>
+            {PLANS.map((p) => (
+              <Link className="mini-plan" href={`/start?plan=${p.slug}`} key={p.slug} prefetch={false}>
                 <span className="mp-name">{p.name}</span>
                 <span className="mp-price">{p.price}</span>
                 <span className="mp-per">{p.per}</span>
-                <span className="mp-desc">{p.desc}</span>
+                <span className="mp-desc">{p.teaser}</span>
               </Link>
             ))}
           </div>
@@ -240,7 +207,7 @@ export default function HomePage() {
             know, reply and we’ll refund it.
           </p>
           <div className="cta-actions">
-            <Link className="btn btn-primary" href="/pricing">Start a pilot — $500</Link>
+            <Link className="btn btn-primary" href="/start?plan=pilot" prefetch={false}>Start a pilot — $500</Link>
             <Link className="btn btn-ghost" href="/product">
               See how it works <span className="arr">→</span>
             </Link>
