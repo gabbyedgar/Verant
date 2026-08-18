@@ -1,24 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-const FEED_EVENTS = [
-  { src: "PRICING", co: "Cipherline", desc: "Enterprise tier removed from public pricing page — “Contact sales” only." },
-  { src: "HIRING", co: "Aegix Labs", desc: "4 new openings posted: federal sales, FedRAMP compliance lead." },
-  { src: "PATENTS", co: "Veilstack", desc: "USPTO filing: “Adversarial prompt detection via layered inference.”" },
-  { src: "GOVERNANCE", co: "Cipherline", desc: "SOC 2 Type II report refreshed; ISO 42001 added to trust page." },
-  { src: "PRODUCT", co: "Northcage", desc: "Changelog: EU AI Act mapping module shipped to all plans." },
-  { src: "FILINGS", co: "Aegix Labs", desc: "SEC Form D filed — $14M raise, undisclosed lead." },
-  { src: "PEOPLE", co: "Veilstack", desc: "VP of Compliance departed; LinkedIn shows move to Praxa." },
-  { src: "WEB", co: "Praxa", desc: "New comparison page published targeting your brand keywords." },
-  { src: "PRICING", co: "Northcage", desc: "Starter plan cut 20%; seat minimums dropped." },
-  { src: "HIRING", co: "Cipherline", desc: "First EU hire: policy counsel, Brussels." },
-  { src: "PRODUCT", co: "Praxa", desc: "Docs update: model-risk scorecards renamed “audit packs.”" },
-  { src: "GOVERNANCE", co: "Aegix Labs", desc: "NIST AI RMF crosswalk published as gated whitepaper." },
-];
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const MAX_ROWS = 7;
 const OFFSETS = [2, 9, 23, 41, 67, 118, 190]; // minutes-ago ladder
+const POLL_MS = 3400;
 
 function feedTime(offsetMin) {
   if (offsetMin < 1) return "now";
@@ -26,39 +12,63 @@ function feedTime(offsetMin) {
   return `${Math.round(offsetMin / 60)}h`;
 }
 
-// deterministic seed so the server render matches hydration
-const SEED = Array.from({ length: 6 }, (_, i) => ({
-  id: i,
-  ev: FEED_EVENTS[(i + 2) % FEED_EVENTS.length],
-  entering: false,
-}));
+/**
+ * Live competitor signal feed.
+ *
+ * The server renders `seed` so the first paint has real content and hydration
+ * matches. After mount the component pulls fresh signals from /api/signals,
+ * which is where a real collector would surface new events.
+ */
+export default function SignalFeed({ seed = [], startOffset = 8 }) {
+  const [rows, setRows] = useState(() =>
+    seed.map((ev, i) => ({ id: i, ev, entering: false }))
+  );
+  const [ticked, setTicked] = useState(false);
+  const next = useRef({ id: seed.length, offset: startOffset });
+  const inFlight = useRef(false);
 
-export default function SignalFeed() {
-  const [rows, setRows] = useState(SEED);
-  const nextRef = useRef({ id: SEED.length, idx: 8 });
+  const pull = useCallback(async () => {
+    if (inFlight.current) return;
+    inFlight.current = true;
+    try {
+      const res = await fetch(`/api/signals?offset=${next.current.offset}&count=1`, {
+        cache: "no-store",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      const ev = data.signals?.[0];
+      if (!ev) return;
+      setRows((prev) => [
+        { id: next.current.id, ev, entering: true },
+        ...prev,
+      ].slice(0, MAX_ROWS));
+      setTicked(true);
+      next.current = { id: next.current.id + 1, offset: next.current.offset + 1 };
+    } catch {
+      // A dropped poll is not worth surfacing — the next tick retries.
+    } finally {
+      inFlight.current = false;
+    }
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = setInterval(() => {
-      setRows((prev) => {
-        const n = nextRef.current;
-        const row = { id: n.id, ev: FEED_EVENTS[n.idx % FEED_EVENTS.length], entering: true };
-        nextRef.current = { id: n.id + 1, idx: n.idx + 1 };
-        return [row, ...prev].slice(0, MAX_ROWS);
-      });
-    }, 3400);
+    const timer = setInterval(pull, POLL_MS);
     return () => clearInterval(timer);
-  }, []);
+  }, [pull]);
 
-  // the newest row reads "now"; older rows age down the fixed offset ladder
-  const ticked = nextRef.current.idx > 8;
   return (
-    <div className="feed" data-reveal style={{ "--d": "0.15s" }} aria-label="Live competitor signal feed">
+    <div
+      className="feed"
+      data-reveal
+      style={{ "--d": "0.15s" }}
+      aria-label="Live competitor signal feed"
+    >
       <div className="feed-head">
         <span className="live"><span className="dot pulse" />Signal feed</span>
         <span>Your competitive set</span>
       </div>
-      <div className="feed-body">
+      <div className="feed-body" aria-live="polite" aria-atomic="false">
         {rows.map((row, i) => (
           <div key={row.id} className={`feed-row${row.entering ? " entering" : ""}`}>
             <span className="t">
@@ -66,7 +76,7 @@ export default function SignalFeed() {
                 ? i === 0
                   ? "now"
                   : feedTime(OFFSETS[Math.min(i - 1, OFFSETS.length - 1)])
-                : feedTime(OFFSETS[i])}
+                : feedTime(OFFSETS[Math.min(i, OFFSETS.length - 1)])}
             </span>
             <span className="ev">
               <span className="ev-top">
