@@ -193,7 +193,7 @@ export default function AboutPage() {
           <h2>Tune in.</h2>
           <p className="lede">A 30-minute setup call this week. Your first brief next Monday, 7am.</p>
           <div className="cta-actions">
-            <Link className="btn btn-primary" href="/pricing">Start a pilot — $500</Link>
+            <Link className="btn btn-primary" href="/start?plan=pilot" prefetch={false}>Start a pilot — $500</Link>
             <Link className="btn btn-ghost" href="/product#brief">
               Read a sample brief <span className="arr">→</span>
             </Link>
