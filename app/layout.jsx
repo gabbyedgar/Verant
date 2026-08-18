@@ -1,9 +1,33 @@
 import "./globals.css";
+import { Newsreader, Geist, Geist_Mono } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import { SITE_URL } from "@/lib/site";
+
+/* Self-hosted at build time: no render-blocking request to Google, no
+   layout shift, and the CSS variables below feed the design system. */
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+  variable: "--font-serif",
+});
+
+const geist = Geist({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+});
 
 export const metadata = {
-  metadataBase: new URL("https://verant.co"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Verant — Know first, not last",
     template: "%s — Verant",
@@ -14,24 +38,32 @@ export const metadata = {
     title: "Verant — Know first, not last",
     description:
       "Competitive intelligence, on frequency. One synthesized brief every Monday at 7am.",
+    type: "website",
+    images: ["/uploads/08_verant_social_square.jpg"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Verant — Know first, not last",
+    description:
+      "Competitive intelligence, on frequency. One synthesized brief every Monday at 7am.",
     images: ["/uploads/08_verant_social_square.jpg"],
   },
 };
 
+export const viewport = {
+  themeColor: "#0E1116",
+};
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Geist:wght@400..700&family=Geist+Mono:wght@400..600&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`${newsreader.variable} ${geist.variable} ${geistMono.variable}`}
+    >
       <body>
+        <a className="skip-link" href="#main">Skip to content</a>
         <Nav />
-        {children}
+        <div id="main">{children}</div>
         <Footer />
       </body>
     </html>
