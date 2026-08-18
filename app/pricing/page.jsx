@@ -89,7 +89,7 @@ export default function PricingPage() {
               <details key={item.q}>
                 <summary>
                   {item.q}
-                  <span className="chev">+</span>
+                  <span className="chev" aria-hidden="true">+</span>
                 </summary>
                 <div className="faq-a">{item.a}</div>
               </details>
@@ -109,9 +109,9 @@ export default function PricingPage() {
             One setup call. Three competitors. The first brief lands in days, not quarters.
           </p>
           <div className="cta-actions">
-            <a className="btn btn-primary" href="mailto:brief@verant.co?subject=Pilot">
+            <Link className="btn btn-primary" href="/start?plan=pilot" prefetch={false}>
               Start a pilot — $500
-            </a>
+            </Link>
             <Link className="btn btn-ghost" href="/product#brief">
               Read the sample brief first <span className="arr">→</span>
             </Link>
