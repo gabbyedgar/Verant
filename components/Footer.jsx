@@ -16,7 +16,7 @@ export default function Footer() {
             <h4>Product</h4>
             <ul>
               <li><Link href="/product">How it works</Link></li>
-              <li><Link href="/product#brief">Sample brief</Link></li>
+              <li><Link href="/briefs">Brief archive</Link></li>
               <li><Link href="/product#compare">Why not consultants</Link></li>
             </ul>
           </div>
@@ -32,13 +32,16 @@ export default function Footer() {
             <h4>Start</h4>
             <ul>
               <li><Link href="/pricing">Pricing</Link></li>
-              <li><Link href="/pricing#plans">Start a pilot</Link></li>
+              <li><Link href="/start?plan=pilot" prefetch={false}>Start a pilot</Link></li>
               <li><a href="mailto:brief@verant.co">brief@verant.co</a></li>
             </ul>
           </div>
         </div>
         <div className="foot-base">
-          <span>© 2026 Verant</span>
+          <span>
+            © 2026 Verant <span className="sep" aria-hidden="true">·</span>{" "}
+            <Link href="/privacy">Privacy</Link>
+          </span>
           <span className="motto">
             Truth <span className="sep">·</span> Intelligence <span className="sep">·</span> Strategy
           </span>

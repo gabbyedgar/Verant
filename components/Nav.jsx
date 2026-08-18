@@ -8,6 +8,7 @@ import Logo from "./Logo";
 const LINKS = [
   { href: "/", label: "Home" },
   { href: "/product", label: "Product" },
+  { href: "/briefs", label: "Briefs" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
 ];
@@ -56,7 +57,7 @@ export default function Nav() {
           ))}
         </div>
         <div className="nav-cta-wrap">
-          <Link className="btn btn-primary btn-sm" href="/pricing#plans">
+          <Link className="btn btn-primary btn-sm" href="/start?plan=pilot" prefetch={false}>
             Start a pilot
           </Link>
           <button
