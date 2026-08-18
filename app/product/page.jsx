@@ -1,20 +1,12 @@
 import Link from "next/link";
 import BriefSample from "@/components/BriefSample";
+import { SIGNAL_SOURCES } from "@/lib/signals";
+import { getLatestBrief } from "@/lib/briefs";
 
 export const metadata = {
   title: "Product",
 };
 
-const SOURCES = [
-  { n: "01", h: "Pricing pages", p: "Tier changes, removed prices, seat minimums, packaging shifts — diffed daily." },
-  { n: "02", h: "Hiring & careers", p: "New roles reveal roadmap. A FedRAMP lead posting is a federal strategy, announced early.", d: "0.05s" },
-  { n: "03", h: "Patents & IP filings", p: "USPTO and EPO filings show where R&D money actually went — not where the blog says.", d: "0.1s" },
-  { n: "04", h: "Governance & certifications", p: "SOC 2, ISO 42001, NIST AI RMF, EU AI Act mappings — the compliance arms race, tracked.", d: "0.15s" },
-  { n: "05", h: "Product changelogs & docs", p: "Shipped features, renamed modules, deprecations. The roadmap, in past tense.", d: "0.05s" },
-  { n: "06", h: "Funding & regulatory filings", p: "Form Ds, annual reports, lobbying registrations. Money movements on the public record.", d: "0.1s" },
-  { n: "07", h: "Leadership & people moves", p: "Exec arrivals and departures, advisory boards, key engineers changing flags.", d: "0.15s" },
-  { n: "08", h: "Web & positioning shifts", p: "Messaging rewrites, new comparison pages, keyword targeting against your brand.", d: "0.2s" },
-];
 
 const WEEK = [
   { d: "Mon 7:00", hot: true, p: <><strong>The brief lands.</strong> One page, in your inbox, before your first meeting.</> },
@@ -35,6 +27,8 @@ const COMPARE_ROWS = [
 ];
 
 export default function ProductPage() {
+  const brief = getLatestBrief();
+
   return (
     <main>
       {/* HERO */}
@@ -64,7 +58,7 @@ export default function ProductPage() {
             </p>
           </div>
           <div className="sources">
-            {SOURCES.map((s) => (
+            {SIGNAL_SOURCES.map((s) => (
               <div className="source" data-reveal key={s.n} style={s.d ? { "--d": s.d } : undefined}>
                 <span className="n">{s.n}</span>
                 <div>
@@ -108,8 +102,11 @@ export default function ProductPage() {
               A sample Monday brief for a fictional client in AI model security. Three competitors,
               one week of signal. Click any row to see what we saw — and what it implies.
             </p>
+            <Link className="tlink" href="/briefs">
+              Browse the full archive <span className="arr">→</span>
+            </Link>
           </div>
-          <BriefSample />
+          <BriefSample brief={brief} barLabel={`Client: redacted · Wk ${brief.week} · ${brief.dateLabel}`} />
         </div>
       </section>
 
@@ -158,7 +155,7 @@ export default function ProductPage() {
             Four weeks, $500, three competitors. If week one tells you nothing new, we refund it.
           </p>
           <div className="cta-actions">
-            <Link className="btn btn-primary" href="/pricing">Start a pilot — $500</Link>
+            <Link className="btn btn-primary" href="/start?plan=pilot" prefetch={false}>Start a pilot — $500</Link>
             <Link className="btn btn-ghost" href="/pricing">
               See all plans <span className="arr">→</span>
             </Link>
