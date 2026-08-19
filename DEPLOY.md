@@ -30,6 +30,20 @@ cd verant
 
 `main` is the production branch — `git clone` checks it out for you.
 
+### Already used hPanel's GitHub integration?
+
+That feature only *clones and pulls* the repository. It does not install
+dependencies, run a build, or start a Node process — so on its own it leaves
+you with source code on disk and nothing being served. This is the single most
+common reason a Next.js app "deployed" this way shows a blank page, a
+directory listing or a 403.
+
+Skip the clone above, `cd` to wherever hPanel put the repo, and carry on from
+step 3. The auto-deploy webhook stays useful: it keeps the code current, and
+`scripts/deploy.sh` (or the build + reload below) turns that code into a
+running site. A `git pull` alone never changes what visitors see, because the
+server keeps serving the previously built `.next/` until you rebuild.
+
 ## 3. Configure the environment
 
 ```bash
