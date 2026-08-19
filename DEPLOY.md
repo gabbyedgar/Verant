@@ -26,8 +26,9 @@ sudo mkdir -p /var/www && sudo chown "$USER" /var/www
 cd /var/www
 git clone https://github.com/gabbyedgar/Verant.git verant
 cd verant
-git checkout claude/wizardly-babbage-9z8spw
 ```
+
+`main` is the production branch — `git clone` checks it out for you.
 
 ## 3. Configure the environment
 
