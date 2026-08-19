@@ -1,3 +1,5 @@
+import { CONTACT_EMAIL } from "@/lib/site";
+
 export const metadata = {
   title: "Privacy",
   description:
@@ -60,7 +62,7 @@ export default function PrivacyPage() {
               <li>Reply “stop” to any brief and we stop sending them.</li>
               <li>
                 Ask us for a copy of what we hold about you, or ask us to correct or delete it, by
-                emailing <a href="mailto:brief@verant.co">brief@verant.co</a>.
+                emailing <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
               </li>
               <li>
                 If you are in the UK or EU, you can complain to your data protection authority.
@@ -76,7 +78,7 @@ export default function PrivacyPage() {
             <h2>Contact</h2>
             <p>
               Questions about any of this go to{" "}
-              <a href="mailto:brief@verant.co">brief@verant.co</a> and reach a person, not a queue.
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> and reach a person, not a queue.
             </p>
           </div>
         </div>

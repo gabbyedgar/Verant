@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
 import { PLAN_SLUGS } from "@/lib/plans";
+import { CONTACT_EMAIL } from "@/lib/site";
+import { mailConfigured, sendLeadEmail } from "@/lib/mail";
 
 /* Pilot signup endpoint.
 
-   Leads are validated here and then handed to a sink. Set LEAD_WEBHOOK_URL
-   to forward them somewhere durable (Zapier, Make, a Slack incoming webhook,
-   your own service). Without it the lead is logged to the server console and
-   nothing is persisted — Vercel's filesystem is ephemeral, so there is no
-   silent local fallback that would look like storage but lose data. */
+   A validated lead is emailed straight to the notification inbox (see
+   lib/mail.js — set RESEND_API_KEY to switch that on) and, if
+   LEAD_WEBHOOK_URL is also set, posted to that webhook as well.
+
+   With no sink configured the lead is only logged to the server console —
+   Vercel's filesystem is ephemeral, so there is no local fallback that would
+   look like storage but quietly lose data. */
 
 const MAX = { name: 120, email: 200, company: 160, competitors: 2000 };
 
@@ -53,18 +57,38 @@ function validate(body) {
   };
 }
 
-async function deliver(lead) {
-  const url = process.env.LEAD_WEBHOOK_URL;
-  if (!url) {
-    console.info("[pilot] lead received (no LEAD_WEBHOOK_URL configured)", lead);
-    return { delivered: false };
-  }
-  const res = await fetch(url, {
+async function postWebhook(lead) {
+  const res = await fetch(process.env.LEAD_WEBHOOK_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(lead),
   });
   if (!res.ok) throw new Error(`webhook responded ${res.status}`);
+}
+
+/* Fan the lead out to every configured sink. One surviving sink means the
+   lead landed somewhere, so the visitor sees success; only a total failure
+   is reported back to them. */
+async function deliver(lead) {
+  const sinks = [];
+  if (mailConfigured()) sinks.push(["email", sendLeadEmail(lead)]);
+  if (process.env.LEAD_WEBHOOK_URL) sinks.push(["webhook", postWebhook(lead)]);
+
+  if (!sinks.length) {
+    console.info("[pilot] lead received (no RESEND_API_KEY or LEAD_WEBHOOK_URL configured)", lead);
+    return { delivered: false };
+  }
+
+  const results = await Promise.allSettled(sinks.map(([, p]) => p));
+  results.forEach((r, i) => {
+    if (r.status === "rejected") {
+      console.error(`[pilot] ${sinks[i][0]} delivery failed`, r.reason);
+    }
+  });
+
+  if (!results.some((r) => r.status === "fulfilled")) {
+    throw new Error("every configured sink failed");
+  }
   return { delivered: true };
 }
 
@@ -91,7 +115,7 @@ export async function POST(request) {
   } catch (err) {
     console.error("[pilot] delivery failed", err);
     return NextResponse.json(
-      { ok: false, error: "We couldn’t record that. Email brief@verant.co and we’ll sort it." },
+      { ok: false, error: `We couldn’t record that. Email ${CONTACT_EMAIL} and we’ll sort it.` },
       { status: 502 }
     );
   }

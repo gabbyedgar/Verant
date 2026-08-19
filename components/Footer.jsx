@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 export default function Footer() {
   return (
@@ -33,7 +34,7 @@ export default function Footer() {
             <ul>
               <li><Link href="/pricing">Pricing</Link></li>
               <li><Link href="/start?plan=pilot" prefetch={false}>Start a pilot</Link></li>
-              <li><a href="mailto:brief@verant.co">brief@verant.co</a></li>
+              <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
             </ul>
           </div>
         </div>
